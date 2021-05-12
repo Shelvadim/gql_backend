@@ -1,0 +1,20 @@
+{
+  "name": "graphql-backend-cource",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "babel-watch ./src/index.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.2",
+    "@babel/preset-env": "^7.14.2",
+    "babel-plugin-import-graphql": "^2.8.1",
+    "babel-watch": "^7.4.1"
+  },
+  "dependencies": {
+    "graphql": "^15.5.0"
+  }
+}
