@@ -8,6 +8,9 @@ yarn add graphql
 
 yarn start
 
+git init
 git remote add origin https://github.com/Shelvadim/gql_backend.git
-git branch -M main
-git push -u origin main
+git add -A git commit -m "1st commit"
+git push origin master
+
+yarn add express
