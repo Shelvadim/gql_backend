@@ -5,3 +5,10 @@ export const schema = gql`
     hello: String
   }
 `;
+
+/*export const book = gql`
+  type Book {
+    title: String
+    author: String
+  }
+`;*/
