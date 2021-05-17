@@ -1,9 +1,23 @@
-//Server
-import { server, app } from './init/server';
+import { ApolloServer, gql } from 'apollo-server';
+import { typeDefs } from './graphql/schema';
+import { resolvers } from './graphql/resolvers';
+import { createUserTable } from './utils';
+import { listTables } from './utils';
+import { client } from '../database/mockdb';
 
-// Config
-import { PORT } from './init/config';
+/*
+client.connect();
+client.query('SELECT NOW()', (err, res) => {
+  console.log(err, res);
+  client.end();
+});
+*/
 
-app.listen({ port: PORT }, () =>
-  console.log(`Server ready at http://localhost:${PORT}${server.graphqlPath}`)
-);
+//createUserTable();
+listTables();
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
+server.listen().then(({ url }: { url: string }) => {
+  console.log(`Server listening at ${url}`);
+});
