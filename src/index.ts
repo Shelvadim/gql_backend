@@ -1,9 +1,16 @@
 import { ApolloServer, gql } from 'apollo-server';
 import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
-import { createUserTable } from './utils';
-import { listTables } from './utils';
-import { client } from '../database/mockdb';
+import {
+  createUserTable,
+  addUser,
+  listTables,
+  getUser,
+  createProjectTable,
+  addProject,
+} from './utils';
+
+//import { client } from '../database/mockdb';
 
 /*
 client.connect();
@@ -14,7 +21,11 @@ client.query('SELECT NOW()', (err, res) => {
 */
 
 //createUserTable();
-listTables();
+//listTables();
+//addUser('John', 'john@gmail.ca', '123a');
+//addProject('onboard new developer', 'active');
+//getUser();
+//createProjectTable();
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
