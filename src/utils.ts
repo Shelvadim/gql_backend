@@ -49,6 +49,20 @@ export const createProjectTable = async () => {
   return readQuery(query) ? 'Table created.' : 'Unable to create table.';
 };
 
+export const createAssignmentTable = async () => {
+  const query = `
+  CREATE TABLE assignments (
+      id serial,
+      project_id int references projects (id),
+      user_id varchar references users (id),
+      primary key (project_id, user_id),
+      user_name varchar
+  )
+  `;
+
+  return readQuery(query) ? 'Table created' : 'Unable to create table.';
+};
+
 /*
 export const createUserTable = async () => {
   const query = `
@@ -149,7 +163,7 @@ export const addUser = async (
     //pool.end();
   //}
 };*/
-
+/*
 export const getUser = async () => {
   const query = `
     SELECT * FROM users
@@ -160,6 +174,51 @@ export const getUser = async () => {
   } catch (err) {
     console.error(err);
   }
+};*/
+
+export const getUsersFromUsersTable = async () => {
+  const query = `
+  SELECT * FROM users;
+  `;
+
+  return readQuery(query);
+};
+
+export const getAssignments = async () => {
+  const query = `
+  SELECT assignments.user_id, users.name, assignments.project_id, projects.title, projects.status 
+  FROM ((users
+  INNER JOIN assignments
+  ON users.id = assignments.user_id)
+  INNER JOIN projects
+  ON assignments.project_id = projects.id);
+  `;
+
+  return readQuery(query);
+};
+
+export const getUser = async () => {
+  const usersFromUsersTable = await getUsersFromUsersTable();
+  const assignments = await getAssignments();
+  const users = await usersFromUsersTable?.map(async (user) => {
+    let projects: object[] = [];
+    await assignments?.forEach((assignment) => {
+      if (user.id === assignment.user_id) {
+        projects.push({
+          id: assignment.project_id,
+          title: assignment.title,
+          status: assignment.status,
+        });
+      }
+    });
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      projects: projects,
+    };
+  });
+  return users;
 };
 
 export const addProject = async (title: string, status: string) => {
@@ -171,6 +230,32 @@ export const addProject = async (title: string, status: string) => {
   try {
     const res = await pool.query(query);
     console.log('Project added.');
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const addAssignment = async (
+  user_email: string,
+  project_id: number,
+  user_name: string
+) => {
+  let user_id: string = '';
+  const user = await findUserByEmail(user_email);
+  if (user?.length === 0) {
+    console.log('User with that email not found.');
+  } else {
+    user_id = user[0].id;
+  }
+
+  const query = {
+    text: 'INSERT INTO assignments(project_id, user_id, user_name) VALUES($1, $2, $3)',
+    values: [project_id, user_id, user_name],
+  };
+
+  try {
+    const res = await pool.query(query);
+    console.log('Assignment created.');
   } catch (err) {
     console.error(err);
   }

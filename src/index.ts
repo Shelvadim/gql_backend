@@ -8,6 +8,8 @@ import {
   getUser,
   createProjectTable,
   addProject,
+  createAssignmentTable,
+  addAssignment,
 } from './utils';
 
 //import { client } from '../database/mockdb';
@@ -26,6 +28,9 @@ client.query('SELECT NOW()', (err, res) => {
 //addProject('onboard new developer', 'active');
 //getUser();
 //createProjectTable();
+//createAssignmentTable();
+//addAssignment('john@gmail.ca', 1, 'John');
+//addAssignment('smith@gmail.ca', 3, 'Smith');
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
