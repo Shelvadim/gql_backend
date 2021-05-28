@@ -1,4 +1,4 @@
-import { pool } from '../database/mockdb';
+import { pool } from './database/mockdb';
 import { v4 as uuidv4 } from 'uuid';
 //pool.connect();
 
